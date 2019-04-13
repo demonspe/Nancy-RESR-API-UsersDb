@@ -1,8 +1,5 @@
+using Nancy.Hosting.Self;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TestDbApi
 {
@@ -10,12 +7,42 @@ namespace TestDbApi
     {
         static void Main(string[] args)
         {
-            // The code provided will print вЂHello WorldвЂ™ to the console.
-            // Press Ctrl+F5 (or go to Debug > Start Without Debugging) to run your app.
-            Console.WriteLine("Hello World!");
-            Console.ReadKey();
+            //Init DB
+            //
 
-            // Go to http://aka.ms/dotnet-get-started-console to continue learning how to build a console app! 
+            var myHost = new MyHosting();
+            myHost.StartHost();
+            Console.WriteLine("Нажмите любую клавишу для выхода...");
+            Console.ReadKey();
+            myHost.StopHost();
+        }
+    }
+
+    class MyHosting
+    {
+        private NancyHost host;
+        private string uri;
+
+        public MyHosting()
+        {
+            uri = "http://localhost:8080";
+            host = new NancyHost(new Uri(uri));
+        }
+        public MyHosting(ushort tcpPortNumber)
+        {
+            uri = "http://localhost:" + tcpPortNumber;
+            host = new NancyHost(new Uri(uri));
+        }
+
+        public void StartHost()
+        {
+            host.Start();
+            Console.WriteLine("Running on " + uri);
+        }
+
+        public void StopHost()
+        {
+            host?.Dispose();
         }
     }
 }
