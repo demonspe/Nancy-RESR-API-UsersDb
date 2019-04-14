@@ -11,13 +11,6 @@
     <div id="app" class="container">
         <h1>Пользователи</h1>
         <input type="text" v-model="search" class="form-control" placeholder="Фильтр..." />
-        <div class="d-flex flex-row">
-            <label>Имя</label>
-            <input type="text" v-model="newName" class="form-control" />
-            <label>Дата рождения</label>
-            <input type="date" v-model="newBirthDay" class="form-control" />\
-            <a class="btn btn-primary" href="#" v-on:click="addUser()"></a>
-        </div>
         <table class="table" v-if="orderedUsers.length > 0">
             <thead>
                 <tr>
@@ -38,14 +31,30 @@
             <tbody>
                 <tr v-for="u in orderedUsers">
                     <td>{{ u.Id }}</td>
-                    <td><input type="text" v-model="u.Name" class="form-control" /></td>
-                    <td><input type="date" v-model="u.BirthDay" class="form-control" /></td>
+                    <td><input type="text" v-model="u.Name" class="form-control" v-on:change="updateUser(id)"/></td>
+                    <td><input type="date" v-model="u.BirthDay" class="form-control"  v-on:change="updateUser(id)"/></td>
                     <td>{{ groups[u.GroupId-1].Name }}</td>
                     <td><a style="color:orangered; cursor:pointer;" v-on:click="deleteUser(u.Id)">Удалить</a></td>
                 </tr>
             </tbody>
         </table>
         <p v-else class="p-2">Жаль, но ничего не найдено.</p>
+        <div class="border border-primary p-3 rounded">
+            <h4>Новый пользователь: </h4>
+            <div>
+                    <label class="p-2">Имя: </label>
+                    <input type="text" v-model="newName" class="form-control" placeholder="Имя..." />
+            </div>
+            <div>
+                <label class="p-2">Дата рождения: </label>
+                <input type="date" v-model="newBirthDay" class="form-control" />
+            </div>
+            <div class="pt-3">
+                <a class="btn btn-primary" href="#" v-on:click="addUser()">Добавить пользователя</a>
+            </div>
+
+        </div>
+        
     </div>
 
     @* SweetAlerts2 cdn *@

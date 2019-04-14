@@ -7,7 +7,7 @@
         users: [],
         groups: [],
         newName: '',
-        newBirthDay: ''
+        newBirthDay: '1992-02-29'
     },
     computed: {
         orderedUsers: function () {
@@ -46,6 +46,9 @@
         },
         addUser: function () {
             ok(this.newName + ' ' + this.newBirthDay);
+        },
+        updateUser: function (id) {
+
         }
     }
 });
