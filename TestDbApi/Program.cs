@@ -7,10 +7,8 @@ namespace TestDbApi
     {
         static void Main(string[] args)
         {
-            //Init DB
-            //
-
             var myHost = new MyHosting();
+            //Стартуем наш хостинг
             myHost.StartHost();
             Console.WriteLine("Нажмите любую клавишу для выхода...");
             Console.ReadKey();
@@ -25,7 +23,7 @@ namespace TestDbApi
 
         public MyHosting()
         {
-            uri = "http://localhost:8080";
+            uri = "http://localhost:8081";
             host = new NancyHost(new Uri(uri));
         }
         public MyHosting(ushort tcpPortNumber)

@@ -1,0 +1,13 @@
+﻿body {
+    padding-top: 20px;
+}
+
+a {
+    font-weight: normal;
+    color: blue;
+}
+
+    a.active {
+        font-weight: bold;
+        color: black;
+    }

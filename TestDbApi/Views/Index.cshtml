@@ -5,34 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>@ViewBag.Title</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="~/Content/css/main.css" />
 </head>
 <body>
-    <style>
-        body{
-            padding-top: 20px;
-        }
-        a {
-            font-weight: normal;
-            color: blue;
-        }
-
-            a.active {
-                font-weight: bold;
-                color: black;
-            }
-
-        .v-enter-active, .v-leave-active {
-            transition: opacity .5s;
-        }
-
-        .v-enter, .v-leave-to /* .fade-leave-active до версии 2.1.8 */ {
-            opacity: 0;
-        }
-    </style>
-
     <div id="app" class="container">
         <h1>Пользователи</h1>
         <input type="text" v-model="search" class="form-control" placeholder="Фильтр..." />
+        <div class="d-flex flex-row">
+            <label>Имя</label>
+            <input type="text" v-model="newName" class="form-control" />
+            <label>Дата рождения</label>
+            <input type="date" v-model="newBirthDay" class="form-control" />\
+            <a class="btn btn-primary" href="#" v-on:click="addUser()"></a>
+        </div>
         <table class="table" v-if="orderedUsers.length > 0">
             <thead>
                 <tr>
@@ -55,59 +40,28 @@
                     <td>{{ u.Id }}</td>
                     <td><input type="text" v-model="u.Name" class="form-control" /></td>
                     <td><input type="date" v-model="u.BirthDay" class="form-control" /></td>
-                    <td>{{ u.GroupId }}</td>
+                    <td>{{ groups[u.GroupId-1].Name }}</td>
+                    <td><a style="color:orangered; cursor:pointer;" v-on:click="deleteUser(u.Id)">Удалить</a></td>
                 </tr>
             </tbody>
         </table>
         <p v-else class="p-2">Жаль, но ничего не найдено.</p>
     </div>
 
+    @* SweetAlerts2 cdn *@
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+    @* Vue.js cdn *@
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.11/lodash.min.js" integrity="sha256-7/yoZS3548fXSRXqc/xYzjsmuW3sFKzuvOCHd06Pmps=" crossorigin="anonymous"></script>
+    @* Bootstrap 4 *@
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.11/lodash.min.js" integrity="sha256-7/yoZS3548fXSRXqc/xYzjsmuW3sFKzuvOCHd06Pmps=" crossorigin="anonymous"></script>
-
+    @* Page actions *@
+    <script src="~/Content/js/Index.js"></script>
     <script>
-        var app = new Vue({
-            el: '#app',
-            data: {
-                sortKey: 'Id',
-                reverse: false,
-                search: '',
-                users: []
-            },
-            computed: {
-                orderedUsers: function () {
-                    let rev = this.reverse ? 'desc' : 'asc';
-                    var self = this
-                    //Filter
-
-                    let result = self.users.filter(function (user) {
-                        let inString = user.Id + user.Name + user.BirthDay + user.GroupId;
-                        return new RegExp(self.search, 'i').test(inString);
-                    });
-                    //Sort
-                    result = _.orderBy(result, this.sortKey, rev);
-                    return result;
-                }
-            },
-            methods: {
-                sortBy: function (sortKey) {
-                    this.reverse = (this.sortKey == sortKey) ? !this.reverse : false;
-                    this.sortKey = sortKey;
-                },
-
-                addUser: function () {
-                    this.users.push(this.newUser);
-                    this.newUser = {};
-                }
-            }
-        });
-
-        fetch('/api/v1/groups/0/users')
-            .then(r => r.json())
-            .then(data => app.users = data);
+        UpdateGroupsList();
+        UpdateUsersData();
     </script>
 </body>
 </html>
