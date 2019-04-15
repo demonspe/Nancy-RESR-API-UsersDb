@@ -1,3 +1,4 @@
+using Nancy;
 using Nancy.Hosting.Self;
 using System;
 
@@ -23,13 +24,21 @@ namespace TestDbApi
 
         public MyHosting()
         {
+            HostConfiguration hostConfigs = new HostConfiguration()
+            {
+                UrlReservations = new UrlReservations() { CreateAutomatically = true }
+            };
             uri = "http://localhost:8081";
-            host = new NancyHost(new Uri(uri));
+            host = new NancyHost(new Uri(uri), new DefaultNancyBootstrapper(), hostConfigs);
         }
         public MyHosting(ushort tcpPortNumber)
         {
+            HostConfiguration hostConfigs = new HostConfiguration()
+            {
+                UrlReservations = new UrlReservations() { CreateAutomatically = true }
+            };
             uri = "http://localhost:" + tcpPortNumber;
-            host = new NancyHost(new Uri(uri));
+            host = new NancyHost(new Uri(uri), new DefaultNancyBootstrapper(), hostConfigs);
         }
 
         public void StartHost()
