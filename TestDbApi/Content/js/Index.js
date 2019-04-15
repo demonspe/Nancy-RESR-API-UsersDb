@@ -4,8 +4,8 @@
         sortKey: 'Id',
         reverse: false,
         search: '',
-        users: [],
-        groups: [],
+        users: [{Id:1, Name: "", GroupId:1, BirthDay: ""}],
+        groups: [{Id:1, Name: ""}],
         newName: '',
         newBirthDay: '1992-02-29'
     },
