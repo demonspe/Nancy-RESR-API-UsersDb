@@ -32,7 +32,7 @@
                 <tr v-for="u in orderedUsers">
                     <td>{{ u.Id }}</td>
                     <td><input type="text" v-model="u.Name" class="form-control" v-on:change="updateUser(u)"/></td>
-                    <td><input type="date" v-model="u.BirthDay" class="form-control"  v-on:change="updateUser(u)"/></td>
+                    <td><input type="date" v-model="u.BirthDay" class="form-control" /></td>
                     <td>{{ groups[u.GroupId-1].Name }}</td>
                     <td><a style="color:orangered; cursor:pointer;" v-on:click="deleteUser(u.id)">Удалить</a></td>
                 </tr>
