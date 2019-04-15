@@ -2,6 +2,7 @@
 using System.Linq;
 using TestDbApi.Data;
 using Nancy;
+using Nancy.Extensions;
 
 namespace TestDbApi.Controllers
 {
@@ -57,18 +58,24 @@ namespace TestDbApi.Controllers
             };
 
             //Добавить нового пользователя
-            Post["/api/v1/users/add"] = parameters => {
-                string newUserJson = Request.Body.ToString();
-                int userId = parameters.id;
-                var user = db.Users.Find(userId);
-                db.Users.Remove(user);
+            Post["/api/v1/users/add"] = _ => {
+                string newUserJson = Request.Body.AsString();
+                var newUserData = JsonConvert.DeserializeObject<User>(newUserJson);
+                db.Users.Add(newUserData);
+                db.SaveChanges();
                 return HttpStatusCode.OK;
             };
             //Обновить данные пользователя
-            Post["/api/v1/users/{id}/update"] = parameters => {
-                int userId = parameters.id;
-                var user = db.Users.Find(userId);
-                db.Users.Remove(user);
+            Post["/api/v1/users/{id}/update"] = _ => {
+                string userDataJson = Request.Body.AsString();
+                var userData = JsonConvert.DeserializeObject<User>(userDataJson);
+                var user = db.Users.Find(userData.Id);
+                if(user != null)
+                {
+                    user.Name = userData.Name;
+                    user.BirthDay = userData.BirthDay;
+                }
+                db.SaveChanges();
                 return HttpStatusCode.OK;
             };
         }

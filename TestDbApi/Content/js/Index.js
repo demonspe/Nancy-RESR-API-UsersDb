@@ -45,10 +45,33 @@
                 });
         },
         addUser: function () {
+            let newUserData = {
+                Name: this.newName,
+                BirthDay: this.newBirthDay,
+                GroupId:1 //Пока что всех в одну группу
+            }
+            fetch('/api/v1/users/add', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(newUserData)
+            }).then((response) => {
+                if (response.ok) {
+                    UpdateUsersData();
+                    ok('Пользователь успешно добавлен');
+                } else { err('Ошибка сервера' + response.statusText); }
+            });
             ok(this.newName + ' ' + this.newBirthDay);
         },
-        updateUser: function (id) {
-
+        updateUser: function (user) {
+            fetch('/api/v1/users/' + user.id + '/update', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(user)
+            }).then((response) => {
+                if (response.ok) {
+                    ok('Данные успешно изменены');
+                } else { err('Ошибка сервера' + response.statusText); }
+            });
         }
     }
 });
